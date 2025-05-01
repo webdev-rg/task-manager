@@ -17,12 +17,14 @@ const COLORS = ["#8D51FF", "#00B8DB", "#7BCE00"];
 
 export const Dashboard = () => {
   const { user } = useContext(UserContext);
+  const date = new Date();
 
   const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState(null);
   const [pieChartData, setPieChartData] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
+  const [greeting, setGreeting] = useState("");
 
   //? Prepare Chart Data
   const prepareChartData = (data) => {
@@ -66,6 +68,14 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
+    if (date.getHours() < 12) {
+      setGreeting("Good Morning");
+    } else if (date.getHours() > 12 && date.getHours() < 17) {
+      setGreeting("Good Afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+
     getDashboardData();
   }, []);
   return (
@@ -73,7 +83,9 @@ export const Dashboard = () => {
       <div className="card my-5">
         <div>
           <div className="col-span-3">
-            <h2 className="text-xl md:text-2xl">Good Morning! {user?.name}</h2>
+            <h2 className="text-xl md:text-2xl">
+              {greeting}! {user?.name}
+            </h2>
             <p className="text-xs md:text[13px text-gray-400 mt-1.5]">
               {moment().format("dddd DD MM YYYY")}
             </p>
